@@ -1,7 +1,5 @@
 import Achievement from "@/components/Achievement";
 import Calendar from "@/components/Calendar";
-import Footer from "@/components/Footer";
-import Navigation from "@/components/Navigation";
 import TodayTask from "@/components/TodayTest";
 import TotalTask from "@/components/TotalTask";
 import Image from "next/image";
@@ -9,7 +7,6 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-      <Navigation />
 
       <div className="flex flex-col items-center min-h-screen bg-gray-100">
         {/* 상단 날짜 및 날씨 정보 섹션 */}
@@ -36,8 +33,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 푸터 */}
-        <Footer />
       </div>
     </>
   );
