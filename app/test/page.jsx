@@ -11,11 +11,37 @@ const MyChart = () => {
         datasets: [{
                 label: 'Poll',
                 data: [13, 6],
-                backgroundColor: ['purple', 'blue'],
+                backgroundColor: (context) => {
+                    console.log(context);
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+                    console.log("chartArea = ", chartArea);
+                    // 애니메이션 촤라락 
+                    if (!chartArea) {
+                        return null;
+                    }
+
+                    if(context.dataIndex === 0) {
+                        return getGradient(chart);
+                    } else {
+                        return 'blue';
+                    }
+                },
                 borderColor: ['purple', 'blue'],
                 circumference: 180,
                 rotation: 270,
             }]
+    }
+
+    // 그라데이션 색깔 줌 
+    function getGradient(chart) {
+        const {ctx, chartArea: {top, bottom, left, right}} = chart;
+        const gradientSegment = ctx.createLinearGradient(left, 0, right, 0);
+        gradientSegment.addColorStop(0, 'red');
+        gradientSegment.addColorStop(0.5, 'orange');
+        gradientSegment.addColorStop(1, 'green');
+        return gradientSegment;
+
     }
 
     const options = {
@@ -31,28 +57,28 @@ const MyChart = () => {
     //     }
     // }
 
-    const gaugeText = {
-        id: `gaugeText`,
+    const textCenter = {
+        id: `textCenter`,
         beforeDatasetsDraw(chart, args, pluginOptions) {
-            const { ctx, data, chartArea: {top, bottom, left, right, width, height} } = chart;
+            const { ctx, data } = chart;
 
             // text 쓸 중심값 구하기
             const xCenter = chart.getDatasetMeta(0).data[0].x;
             const yCenter = chart.getDatasetMeta(0).data[0].y;
 
             ctx.save();
-            ctx.fillStyle = 'gray';
-            ctx.font = 'bold 30px sans-serif';
+            ctx.font = 'bolder 30px sans-serif';
+            ctx.fillStyle = 'red';
             ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
-            ctx.fillText(`Value is: ${data.datasets[0].data[0]}`, xCenter, yCenter - 10);
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`Value : ${data.datasets[0].data[0]}`, xCenter, yCenter);
 
         }
     }
 
     return (
         <div className='w-1/3'>
-            <Doughnut data={data} options={options} plugins={[gaugeText]} />
+            <Doughnut data={data} options={options} plugins={[textCenter]} />
         </div>
     )
 }
