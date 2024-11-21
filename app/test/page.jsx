@@ -21,19 +21,38 @@ const MyChart = () => {
     const options = {
     }
 
-    const gaugeBackground = {
-        id: `gaugeBackground`,
+    // const gaugeBackground = {
+    //     id: `gaugeBackground`,
+    //     beforeDatasetsDraw(chart, args, pluginOptions) {
+    //         const { ctx, chartArea: {top, bottom, left, right, width, height} } = chart;
+    //         ctx.save();
+    //         ctx.fillStyle = 'gray';
+    //         ctx.fillRect(left, top, width, height);
+    //     }
+    // }
+
+    const gaugeText = {
+        id: `gaugeText`,
         beforeDatasetsDraw(chart, args, pluginOptions) {
-            const { ctx, chartArea: {top, bottom, left, right, width, height} } = chart;
+            const { ctx, data, chartArea: {top, bottom, left, right, width, height} } = chart;
+
+            // text 쓸 중심값 구하기
+            const xCenter = chart.getDatasetMeta(0).data[0].x;
+            const yCenter = chart.getDatasetMeta(0).data[0].y;
+
             ctx.save();
             ctx.fillStyle = 'gray';
-            ctx.fillRect(left, top, width, height);
+            ctx.font = 'bold 30px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(`Value is: ${data.datasets[0].data[0]}`, xCenter, yCenter - 10);
+
         }
     }
 
     return (
         <div className='w-1/3'>
-            <Doughnut data={data} options={options} plugins={[gaugeBackground]} />
+            <Doughnut data={data} options={options} plugins={[gaugeText]} />
         </div>
     )
 }
