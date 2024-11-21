@@ -1,34 +1,74 @@
 "use client"
 
-import { Chart as ChartJS, RadialLinearScale, LineElement, PointElement, Filler, Title, Tooltip, Legend } from 'chart.js';
-import { Radar } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Title, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 
-ChartJS.register(RadialLinearScale, LineElement, PointElement, Filler, Title, Tooltip, Legend);
-
+ChartJS.register(ArcElement, Title, Tooltip, Legend);
 
 const MyChart = () => {
     const data = {
-        labels: ['Mon', 'Tue', 'Wed'],
+        labels: ['Yes', 'No'],
         datasets: [{
-                label: 'Weekdays',
-                data: [33, 53, 85],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'black',
+                label: 'Poll',
+                data: [13, 6],
+                backgroundColor: ['purple', 'blue'],
+                borderColor: ['purple', 'blue'],
+                circumference: 180,
+                rotation: 270,
             }]
     }
 
     const options = {
     }
 
-    
+    const gaugeBackground = {
+        id: `gaugeBackground`,
+        beforeDatasetsDraw(chart, args, pluginOptions) {
+            const { ctx, chartArea: {top, bottom, left, right, width, height} } = chart;
+            ctx.save();
+            ctx.fillStyle = 'gray';
+            ctx.fillRect(left, top, width, height);
+        }
+    }
+
     return (
-        <div className='w-2/3'>
-            <Radar data={data} options={options} />
+        <div className='w-1/3'>
+            <Doughnut data={data} options={options} plugins={[gaugeBackground]} />
         </div>
     )
 }
 
 export default MyChart;
+
+// import { Chart as ChartJS, RadialLinearScale, LineElement, PointElement, Filler, Title, Tooltip, Legend } from 'chart.js';
+// import { Radar } from 'react-chartjs-2';
+
+// ChartJS.register(RadialLinearScale, LineElement, PointElement, Filler, Title, Tooltip, Legend);
+
+
+// const MyChart = () => {
+//     const data = {
+//         labels: ['Mon', 'Tue', 'Wed'],
+//         datasets: [{
+//                 label: 'Weekdays',
+//                 data: [33, 53, 85],
+//                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
+//                 borderColor: 'black',
+//             }]
+//     }
+
+//     const options = {
+//     }
+
+    
+//     return (
+//         <div className='w-2/3'>
+//             <Radar data={data} options={options} />
+//         </div>
+//     )
+// }
+
+// export default MyChart;
 
 // import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 // import { Pie } from 'react-chartjs-2';
