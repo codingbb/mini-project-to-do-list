@@ -1,82 +1,82 @@
 "use client"
 
-import React from "react";
-import { Doughnut } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+// import React from "react";
+// import { Doughnut } from "react-chartjs-2";
+// import {
+//   Chart as ChartJS,
+//   ArcElement,
+//   Tooltip,
+//   Legend,
+// } from "chart.js";
 
-// Chart.js 플러그인 등록
-ChartJS.register(ArcElement, Tooltip, Legend);
+// // Chart.js 플러그인 등록
+// ChartJS.register(ArcElement, Tooltip, Legend);
 
-const RadialBarChart = () => {
-  // 데이터 설정
-  const data = {
-    labels: ["Red", "Blue"], // 각각의 원에 대한 라벨
-    datasets: [
-      {
-        label: "Red",
-        data: [9], // [가치, 나머지 공간]
-        backgroundColor: ["#ff6384"], // 채우기 색상
-        borderWidth: 0, // 테두리 두께 제거
-        circumference: 300, // 차트가 그려질 각도
-      },
-    ],
-  };
+// const RadialBarChart = () => {
+//   // 데이터 설정
+//   const data = {
+//     labels: ["Red", "Blue"], // 각각의 원에 대한 라벨
+//     datasets: [
+//       {
+//         label: "Red",
+//         data: [9], // [가치, 나머지 공간]
+//         backgroundColor: ["#ff6384"], // 채우기 색상
+//         borderWidth: 0, // 테두리 두께 제거
+//         circumference: 300, // 차트가 그려질 각도
+//       },
+//     ],
+//   };
 
-  // 옵션 설정
-  const options = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (context) => `${context.label}: ${context.raw}`,
-        },
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-  };
+//   // 옵션 설정
+//   const options = {
+//     plugins: {
+//       tooltip: {
+//         callbacks: {
+//           label: (context) => `${context.label}: ${context.raw}`,
+//         },
+//       },
+//     },
+//     responsive: true,
+//     maintainAspectRatio: false,
+//   };
 
-  const backgroundCircle = {
-    id : 'backgroundCircle',
-    beforeDatasetDraw(chart, args, pluginOptions) {
-      const { ctx } = chart;
-      ctx.save();
+//   const backgroundCircle = {
+//     id : 'backgroundCircle',
+//     beforeDatasetDraw(chart, args, pluginOptions) {
+//       const { ctx } = chart;
+//       ctx.save();
 
-       // 데이터 셋 메타정보 가져오기
-      console.log(chart.getDatasetMeta(0));
-      const xCoor = chart.getDatasetMeta(0).data[0].x;
-      const yCoor = chart.getDatasetMeta(0).data[0].y;
-      const innerRadius = chart.getDatasetMeta(0).data[0].innerRadius;
-      const outerRadius = chart.getDatasetMeta(0).data[0].outerRadius;
+//        // 데이터 셋 메타정보 가져오기
+//       console.log(chart.getDatasetMeta(0));
+//       const xCoor = chart.getDatasetMeta(0).data[0].x;
+//       const yCoor = chart.getDatasetMeta(0).data[0].y;
+//       const innerRadius = chart.getDatasetMeta(0).data[0].innerRadius;
+//       const outerRadius = chart.getDatasetMeta(0).data[0].outerRadius;
 
-      // 원의 두께
-      const width = outerRadius - innerRadius;
-      const angle = Math.PI / 180;
+//       // 원의 두께
+//       const width = outerRadius - innerRadius;
+//       const angle = Math.PI / 180;
 
-      // 배경 원 그리기
-      ctx.beginPath();
-      ctx.lineWidth = width; // 원의 두께 설정
-      ctx.strokeStyle = 'lightgrey'; // 원의 색상 설정
-      ctx.arc(xCoor, yCoor, outerRadius - width / 2, 0, angle * 360, false);
-      // ctx.arc(xCoor, yCoor, (outerRadius + innerRadius) / 2, 0, angle * 360, false); // 중간 값으로 중심 원형 그리기
-      ctx.stroke(); // 선 그리기
-      // ctx.restore(); // 캔버스 상태를 초기화
+//       // 배경 원 그리기
+//       ctx.beginPath();
+//       ctx.lineWidth = width; // 원의 두께 설정
+//       ctx.strokeStyle = 'lightgrey'; // 원의 색상 설정
+//       ctx.arc(xCoor, yCoor, outerRadius - width / 2, 0, angle * 360, false);
+//       // ctx.arc(xCoor, yCoor, (outerRadius + innerRadius) / 2, 0, angle * 360, false); // 중간 값으로 중심 원형 그리기
+//       ctx.stroke(); // 선 그리기
+//       // ctx.restore(); // 캔버스 상태를 초기화
 
-    }
-  }
+//     }
+//   }
 
-  return (
-    <div style={{ width: "300px", height: "300px" }}>
-      <Doughnut data={data} options={options} plugins = {[backgroundCircle]} />
-    </div>
-  );
-};
+//   return (
+//     <div style={{ width: "300px", height: "300px" }}>
+//       <Doughnut data={data} options={options} plugins = {[backgroundCircle]} />
+//     </div>
+//   );
+// };
 
-export default RadialBarChart;
+// export default RadialBarChart;
 
 
 // import { Chart as ChartJS, ArcElement, Title, Tooltip, Legend } from 'chart.js';
@@ -334,58 +334,60 @@ export default RadialBarChart;
 
 
 
-// // components/MyChart.js
-// import React from 'react';
-// import { Bar } from 'react-chartjs-2';
-// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+// components/MyChart.js
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
-// // Chart.js의 기본 구성 요소 등록
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// Chart.js의 기본 구성 요소 등록
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// const MyChart = () => {
-//   const data = {
-//     labels: ['Yes', ' No', 'Not Sure'],
-//     datasets: [
-//       {
-//         label: 'Poll',
-//         data: [6, 3, 9],
-//         backgroundColor: "blue",
-//         borderWidth: 0,
-//       },
-//     ],
-//   };
+const MyChart = () => {
+  const data = {
+    labels: ['Yes', ' No', 'Not Sure'],
+    datasets: [
+      {
+        label: 'Poll',
+        data: [6, 3, 9],
+        backgroundColor: "purple",
+        borderWidth: 0,
+      },
+    ],
+  };
 
-//   const barPattern = {
-//     id: `barPattern`,
-//     beforeDatasetsDraw(chart, args, pluginOptions) {
-//         const { ctx, chartArea: { top, bottom, height }, scales: {x, y} } = chart;
+  
+  const dashedBorders = {
+    id: 'dashedBorders',
+    beforeDatasetsDraw(chart, args, pluginOptions) {
+      const { ctx, chartArea: {top, bottom, left, right, width, height} } = chart;
 
-//         ctx.save();
-//         const width = chart.getDatasetMeta(0).data[0].width;
-//         console.log("width = ", width); // 지금 기본 그래프 width 구하기 
+      ctx.save();
+      ctx.beginPath();
+      ctx.strokeStyle = 'gray';
+      ctx.lineWidth = 1;
+      // 점선 시작위치 설정
+      ctx.setLineDash([5, 6]);
+      ctx.moveTo(left, top);
+      ctx.lineTo(right, top);
+      ctx.lineTo(right, bottom);
+      ctx.lineTo(left, bottom);
+      ctx.closePath();
+      ctx.stroke();
+    }
+  }
 
-//         chart.getDatasetMeta(0).data.forEach((bar, index) => {
-//             ctx.fillRect(x.getPixelForValue(index) - width / 2, top, width, height - 0.5);
-//         });
-
-//       }
-//     }
-
-//   const options = {
-   
-//   };
-
-
-
-//   return (
-//     <div className='w-2/3'>
-//         <Bar data={data} options={options} plugins={[barPattern]} />;
-//     </div>
-//   )
-// };
-
-// export default MyChart;
+  const options = {
+  
+  };
 
 
+  return (
+    <div className='w-2/3'>
+        <Bar data={data} options={options} plugins={[dashedBorders]} />;
+    </div>
+  )
+};
+
+export default MyChart;
 
 
