@@ -15,36 +15,14 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const RadialBarChart = () => {
   // 데이터 설정
   const data = {
-    labels: ["Red", "Blue", "Green"], // 각각의 원에 대한 라벨
+    labels: ["Red", "Blue"], // 각각의 원에 대한 라벨
     datasets: [
       {
         label: "Red",
         data: [9], // [가치, 나머지 공간]
         backgroundColor: ["#ff6384"], // 채우기 색상
-        borderWidth: 1, // 테두리 두께 제거
-        borderColor: "white",
-        cutout: "85%", // 내부 반지름 비율
-        // rotation: -90, // 시작 각도
+        borderWidth: 0, // 테두리 두께 제거
         circumference: 300, // 차트가 그려질 각도
-      },
-      {
-        label: "Blue",
-        data: [50],
-        backgroundColor: ["#36a2eb"],
-        borderWidth: 1,
-        borderColor: "white",
-        cutout: "85%",
-        circumference: 180,
-      },
-      {
-        label: "Green",
-        data: [80, 10],
-        backgroundColor: ["green", "black"],
-        borderWidth: 1,
-        borderColor: "white",
-        cutout: "85%",
-        circumference: 260,
-        // rotation: 270,
       },
     ],
   };
@@ -62,9 +40,38 @@ const RadialBarChart = () => {
     maintainAspectRatio: false,
   };
 
+  const backgroundCircle = {
+    id : 'backgroundCircle',
+    beforeDatasetDraw(chart, args, pluginOptions) {
+      const { ctx } = chart;
+      ctx.save();
+
+       // 데이터 셋 메타정보 가져오기
+      console.log(chart.getDatasetMeta(0));
+      const xCoor = chart.getDatasetMeta(0).data[0].x;
+      const yCoor = chart.getDatasetMeta(0).data[0].y;
+      const innerRadius = chart.getDatasetMeta(0).data[0].innerRadius;
+      const outerRadius = chart.getDatasetMeta(0).data[0].outerRadius;
+
+      // 원의 두께
+      const width = outerRadius - innerRadius;
+      const angle = Math.PI / 180;
+
+      // 배경 원 그리기
+      ctx.beginPath();
+      ctx.lineWidth = width; // 원의 두께 설정
+      ctx.strokeStyle = 'lightgrey'; // 원의 색상 설정
+      ctx.arc(xCoor, yCoor, outerRadius - width / 2, 0, angle * 360, false);
+      // ctx.arc(xCoor, yCoor, (outerRadius + innerRadius) / 2, 0, angle * 360, false); // 중간 값으로 중심 원형 그리기
+      ctx.stroke(); // 선 그리기
+      // ctx.restore(); // 캔버스 상태를 초기화
+
+    }
+  }
+
   return (
     <div style={{ width: "300px", height: "300px" }}>
-      <Doughnut data={data} options={options} />
+      <Doughnut data={data} options={options} plugins = {[backgroundCircle]} />
     </div>
   );
 };
