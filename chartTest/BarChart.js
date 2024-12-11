@@ -19,12 +19,17 @@ export default function BarChart() {
                 type: "bar",
                 data: {
                     // labels 는 x축 
-                    labels: ["John", "Jane", "Doe", "Emily"],
+                    // labels: ["John", "Jane", "Doe", "Emily"],
                     // x축에 표시할 데이터
                     datasets: [
                         {
                             label: ["Info"], 
-                            data: [10, 20, 30, 78],
+                            data: [
+                                { name: "John", age: 50 }, 
+                                { name: "Jane", age: 20 }, 
+                                { name: "Doe", age: 30 }, 
+                                { name: "Emily", age: 78 }
+                            ],
                             // backgroundColor: ["red", "green", "blue", "yellow"],
                             backgroundColor: [
                                 "rgb(255, 99, 132, 0.5)", 
@@ -40,6 +45,10 @@ export default function BarChart() {
                 options: {
                     // responsive: true 는 차트의 크기를 조정할 수 있게 한다 == 반응형이다
                     // responsive: true,
+                    parsing: {
+                        xAxisKey: 'name',
+                        yAxisKey: 'age',
+                    },
                     plugins: {
                         legend: {
                             labels: {
