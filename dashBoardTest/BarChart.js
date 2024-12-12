@@ -57,6 +57,7 @@ export default function BarChart() {
                                 "rgb(255, 205, 86, 0.5)", 
                                 "rgb(75, 192, 192, 0.5)",
                             ],
+                            
                             borderColor: ["black", "black", "black", "black"],
                             borderWidth: 1,
                         },
@@ -98,4 +99,16 @@ export default function BarChart() {
             <canvas ref={chartRef}></canvas>
         </div>
     )
+}
+
+function getGradient(chart) {
+    const ctx = chart.ctx;
+    const chartArea = chart.chartArea;
+
+    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+    gradient.addColorStop(0, "rgba(255, 99, 132, 0.5)");
+    gradient.addColorStop(0.5, "rgba(54, 162, 235, 0.5)");
+    gradient.addColorStop(1, "rgba(255, 205, 86, 0.5)");
+
+    return gradient;
 }
