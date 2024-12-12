@@ -23,6 +23,8 @@ export default function BarChart() {
                     // x축에 표시할 데이터
                     datasets: [
                         {
+                            // barPercentage: 2, // 바의 너비를 설정
+                            barThickness: 50, // 바의 두께를 설정
                             label: ["Info"], 
                             data: [
                                 { name: "John", age: 50 }, 
@@ -39,17 +41,28 @@ export default function BarChart() {
                             ],
                             borderColor: ["black", "black", "black", "black"],
                             borderWidth: 1,
+                            borderRadius: 10,
                         },
                     ],
                 },
                 options: {
                     // responsive: true 는 차트의 크기를 조정할 수 있게 한다 == 반응형이다
                     // responsive: true,
+                    layout: {
+                        padding: 40,
+                    },
                     parsing: {
                         xAxisKey: 'name',
                         yAxisKey: 'age',
                     },
                     plugins: {
+                        title: {
+                            display: true,
+                            text: "Bar Chart",
+                            font: {
+                                size: 30,
+                            },
+                        },
                         legend: {
                             labels: {
                                 color: 'red', // 레이블의 색상을 빨간색으로 설정
