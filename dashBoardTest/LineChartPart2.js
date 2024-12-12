@@ -35,7 +35,31 @@ export default function LineChartPart2() {
                                 "rgb(255, 99, 132, 0.5)", 
                             ],
                             borderColor: "red",
-                            borderWidth: 1,
+                            borderWidth: 5,
+
+                            segment: {
+                                borderColor: (ctx) => {
+                                    const { p0, p1 } = ctx;
+
+                                    // 그냥 po, p1 값으로 접근하려니까 
+                                    // 원래 데이터 값 접근
+                                    const rawP0 = p0.raw; // p0의 원래 데이터 값
+                                    const rawP1 = p1.raw; // p1의 원래 데이터 값
+                                    console.log("rawP0 = ", rawP0);
+                                    console.log("rawP1 = ", rawP1);
+
+                                    if (rawP0 && rawP1) {
+                                        // y 값 기준으로 색상 설정
+                                        if (rawP0.y > 50 || rawP1.y > 50) {
+                                            return "blue"; // y가 50 초과하면 파란색
+                                        } else {
+                                            return "red"; // y가 50 이하이면 빨간색
+                                        }
+                                    }
+                            
+                                    return "black"; // 기본 색상
+                                },
+                            },
                         },
                     ],
                 },
