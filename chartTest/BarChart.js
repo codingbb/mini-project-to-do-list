@@ -1,9 +1,42 @@
 "use client";
-import { useRef, useEffect } from "react";
+
+import { useRef, useEffect, useState } from "react";
 import { Chart } from "chart.js/auto";
+import axios from "axios";
 
 export default function BarChart() {
     const chartRef = useRef(null);
+    const [chartData, setChartData] = useState([]);
+
+    // axios 사용한 방법
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios("https://dummyjson.com/users");
+            if(response.status !== 200) {
+                console.error("Bad response from server");
+            }
+            const data = response.data;
+            const firstSix = data.users.slice(0, 6);
+            console.log(data.users);
+            setChartData(firstSix);
+        };
+        fetchData();
+    }, []);
+
+    // fetch를 사용한 방법
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const response = await fetch("https://dummyjson.com/users");
+    //         if(!response.ok) {
+    //             console.error("Bad response from server");
+    //         }
+    //         const data = await response.json();
+    //         const firstTen = data.users.slice(0, 10);
+    //         console.log(data.users);
+    //         setChartData(firstTen);
+    //     };
+    //     fetchData();
+    // }, []);
 
     useEffect(() => {
         if(chartRef.current) {
@@ -15,23 +48,23 @@ export default function BarChart() {
             // 2d 캔버스 컨텍스트를 가져온다.
             const context = chartRef.current.getContext("2d");
 
+            // api로 받아온 데이터를 map 돌려서 매핑 
+            const label = chartData.map((items) => items.firstName);
+            const data = chartData.map((items) => items.weight);
+            console.log("label = ", label);
+            console.log("data = ", data);
+
             const newChart = new Chart(context, {
                 type: "bar",
                 data: {
                     // labels 는 x축 
-                    // labels: ["John", "Jane", "Doe", "Emily"],
-                    // x축에 표시할 데이터
+                    labels: label,
                     datasets: [
                         {
                             // barPercentage: 2, // 바의 너비를 설정
-                            barThickness: 50, // 바의 두께를 설정
+                            // barThickness: 50, // 바의 두께를 설정
                             label: ["Info"], 
-                            data: [
-                                { name: "John", age: 50 }, 
-                                { name: "Jane", age: 20 }, 
-                                { name: "Doe", age: 30 }, 
-                                { name: "Emily", age: 78 }
-                            ],
+                            data: data,
                             // backgroundColor: ["red", "green", "blue", "yellow"],
                             backgroundColor: [
                                 "rgb(255, 99, 132, 0.5)", 
@@ -58,7 +91,7 @@ export default function BarChart() {
                     plugins: {
                         title: {
                             display: true,
-                            text: "Bar Chart",
+                            text: "Weight Name Info",
                             font: {
                                 size: 30,
                             },
@@ -86,7 +119,7 @@ export default function BarChart() {
 
         chartRef.current.chart = newChart;
         }
-    }, []);
+    }, [chartData]);
 
     return (
         <div style={{position: "relative", width: "90vw", height: "80vh"}}>
